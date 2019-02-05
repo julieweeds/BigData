@@ -1,5 +1,5 @@
 # BIG
-https://github.com/pzfreo/big
+https://github.com/julieweeds/BigData
 
 Materials for Big Data course
 
