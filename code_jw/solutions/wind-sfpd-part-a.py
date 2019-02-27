@@ -13,7 +13,7 @@ datafile='/home/big/join/weather/SF04.csv'  #to test on just one file
 ### load data using SQLContext and csv schema (which deals with formatting)
 conf = SparkConf().setAppName("wind-sfpd")
 sc = SparkContext(conf=conf)
-sqlc = SQLContext(sc)cd 
+sqlc = SQLContext(sc)
 
 
 df = sqlc.read.format('com.databricks.spark.csv').options(header='true', inferschema='true').load(datafile)
