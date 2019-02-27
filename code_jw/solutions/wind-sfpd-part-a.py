@@ -46,7 +46,7 @@ mapped = filter2.map( lambda ((s,d,h),(t,w)): ((s,d,h), (t,w,1)))
 reduced = mapped.reduceByKey( lambda (t1,w1,c1), (t2,w2,c2): (t1+t2,w1+w2,c1+c2))
 
 #calculate averages
-averaged = reduced.map(lambda ((s,d,h), (t,w,c)): ((s,d,h, t/c, w/c)))
+averaged = reduced.map(lambda ((s,d,h), (t,w,c)): ((s,d,h), (t/c, w/c)))
 
 #output results
 for (key,value) in averaged.sortByKey().collect():
