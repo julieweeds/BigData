@@ -8,19 +8,19 @@ from datetime import datetime
 datafile='/home/big/join/weather/*.csv'  #for all files
 datafile='/home/big/join/weather/SF04.csv'  #to test on just one file
 
-###load data using SparkSession
-spark=SparkSession.builder.getOrCreate()
-df=spark.read.csv(datafile,header=True)
-
-### alternative way of loading using SQLContext
-#conf = SparkConf().setAppName("wind-sfpd")
-#sc = SparkContext(conf=conf)
-#sqlc = SQLContext(sc)
 
 
-#df = sqlc.read.format('com.databricks.spark.csv').\
-#options(header='true', inferschema='true').\
-#load(datafile)
+### load data using SQLContext and csv schema (which deals with formatting)
+conf = SparkConf().setAppName("wind-sfpd")
+sc = SparkContext(conf=conf)
+sqlc = SQLContext(sc)cd 
+
+
+df = sqlc.read.format('com.databricks.spark.csv').options(header='true', inferschema='true').load(datafile)
+
+### can load data using SparkSession like this but then will have to explicitly handle format conversions
+#spark=SparkSession.builder.getOrCreate()
+#df=spark.read.csv(datafile,header=True)
 
 def date_and_hour(s):
     dt = parse(s.replace('?',' '))
