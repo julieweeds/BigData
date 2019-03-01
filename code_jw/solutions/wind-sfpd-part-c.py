@@ -31,7 +31,6 @@ def locate(l,index,locations):
 incidentdata="/home/big/join/incidents/sfpd.csv"
 sfpd = sqlc.read.format('com.databricks.spark.csv').options(header='true', inferschema='true').load(incidentdata)
 
-
 #pull out date, hour and lat longs, filter for 2014 dates
 fixed = sfpd.rdd.map(lambda r: (r.Date, parse(r.Time).hour, [r.Y,r.X]))
 
