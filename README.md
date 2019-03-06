@@ -14,4 +14,5 @@ licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 Int
 The VM for this class is available at:
 https://s3-eu-west-1.amazonaws.com/bdec/BigDataCourseVM.ova
 
-
+rdd & DataFrame blog post:
+https://databricks.com/blog/2016/07/14/a-tale-of-three-apache-spark-apis-rdds-dataframes-and-datasets.html
