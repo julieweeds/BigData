@@ -1,7 +1,3 @@
-import unicodedata
-# u2a converts Unicode to ASCII
-def u2a(u): return str(unicodedata.normalize('NFKD',u).encode('ascii','ignore'))
-
 # strip removes any non-alpha characters
 def strip(s): return ''.join(filter(str.isalpha, s))
 
@@ -10,19 +6,18 @@ findspark.init()
 
 import pyspark
 sc = pyspark.SparkContext.getOrCreate()
-books = sc.textFile("file:///home/big/wordcount/*.txt")
+books = sc.textFile("*.txt")
 
-split = books.flatMap(lambda line: line.split())
-asc = split.map(u2a)
-stripped = asc.map(strip)
-notempty = stripped.filter(lambda w: len(w)>0)
+tokens = books.flatMap(lambda line: line.split())
+stripped = tokens.map(strip)
+notempty = stripped.filter(lambda w: len(w)>0) #filter any zero length tokens
 
-lower = notempty.map(lambda w: w.lower())
-mapped = lower.map(lambda w: (w,1))
-wordcount = mapped.reduceByKey(lambda x,y: x+y)
+lower = notempty.map(lambda w: w.lower())  #lowercase everything
+mapped = lower.map(lambda w: (w,1))        #map every token to a (token,1) key-pair
+wordcount = mapped.reduceByKey(lambda x,y: x+y)   #apply add to accumulate counts for each key
 
-reorder = wordcount.map(lambda (k,v):(v,k))
-sort = reorder.sortByKey(False)
+reorder = wordcount.map(lambda p:(p[1],p[0]))   #swap the arguments in the tuples
+sort = reorder.sortByKey(False)    #sort by frequency (inverse)
 
 for k,v in sort.collect():
-    print k,v
+    print (k,v)
